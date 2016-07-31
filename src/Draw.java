@@ -186,7 +186,7 @@ public class Draw {
 		container.add(panel, BorderLayout.NORTH);
 		container.add(panel1,BorderLayout.SOUTH);
 		frame.setVisible(true);
-		frame.setSize(800, 800);
+		frame.setSize(860, 860);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
