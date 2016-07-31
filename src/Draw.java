@@ -1,14 +1,14 @@
-import javax.swing.JButton;
-import javax.swing.JColorChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JColorChooser;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Draw {
 
@@ -20,7 +20,7 @@ public class Draw {
 	Color color = Color.WHITE;
 	JButton clearButton, blackButton, blueButton, greenButton, redButton,
 			colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
-			pinkButton, cyanButton, lightGrayButton;
+			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton;
 	ActionListener listener = new ActionListener() {
 
 		public void actionPerformed(ActionEvent event) {
@@ -48,6 +48,10 @@ public class Draw {
 				canvas.cyan();
 			} else if (event.getSource() == lightGrayButton) {
 				canvas.lightGray();
+			} else if (event.getSource() == saveButton) {
+				canvas.save();
+			} else if (event.getSource() == loadButton) {
+				canvas.load();
 			} else if (event.getSource() == colorPicker) {
 				color = JColorChooser.showDialog(null, "Pick your color!",
 						color);
@@ -112,6 +116,10 @@ public class Draw {
 		lightGrayButton.setBackground(Color.LIGHT_GRAY);
 		lightGrayButton.setPreferredSize(new Dimension(40, 40));
 		lightGrayButton.addActionListener(listener);
+		saveButton = new JButton("Save");
+		saveButton.addActionListener(listener);
+		loadButton = new JButton("Load");
+		loadButton.addActionListener(listener);
 		colorPicker = new JButton("Color Picker");
 		colorPicker.addActionListener(listener);
 		clearButton = new JButton("Clear");
@@ -128,13 +136,15 @@ public class Draw {
 		panel.add(pinkButton);
 		panel.add(cyanButton);
 		panel.add(lightGrayButton);
+		panel.add(saveButton);
+		panel.add(loadButton);
 		panel.add(colorPicker);
 		panel.add(clearButton);
 
 		container.add(panel, BorderLayout.NORTH);
 
 		frame.setVisible(true);
-		frame.setSize(700, 700);
+		frame.setSize(780, 780);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
