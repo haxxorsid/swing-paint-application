@@ -1,6 +1,3 @@
-Swing-Paint-Application
-=======================
-
 
 What is Swing Paint Applicaiton ?
 ---------
