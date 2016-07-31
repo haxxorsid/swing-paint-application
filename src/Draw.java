@@ -2,12 +2,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Draw {
@@ -20,7 +26,13 @@ public class Draw {
 	Color color = Color.WHITE;
 	JButton clearButton, blackButton, blueButton, greenButton, redButton,
 			colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
-			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton;
+			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
+			saveAsButton;
+	private JFileChooser fileChooser;
+	private File file;
+	private Icon save = new ImageIcon(getClass().getResource("save.png"));
+	private int saveCounter = 0;
+	private JLabel filenameBar;
 	ActionListener listener = new ActionListener() {
 
 		public void actionPerformed(ActionEvent event) {
@@ -43,15 +55,39 @@ public class Draw {
 			} else if (event.getSource() == yellowButton) {
 				canvas.yellow();
 			} else if (event.getSource() == pinkButton) {
-				canvas.yellow();
+				canvas.pink();
 			} else if (event.getSource() == cyanButton) {
 				canvas.cyan();
 			} else if (event.getSource() == lightGrayButton) {
 				canvas.lightGray();
 			} else if (event.getSource() == saveButton) {
-				canvas.save();
+				if (saveCounter == 0) {
+					fileChooser = new JFileChooser();
+					if (fileChooser.showSaveDialog(saveButton) == JFileChooser.APPROVE_OPTION) {
+						file = fileChooser.getSelectedFile();
+						saveCounter = 1;
+						filenameBar.setText(file.toString());
+						canvas.save(file);
+					}
+				} else {
+					filenameBar.setText(file.toString());
+					canvas.save(file);
+				}
+			} else if (event.getSource() == saveAsButton) {
+				saveCounter = 1;
+				fileChooser = new JFileChooser();
+				if (fileChooser.showSaveDialog(saveAsButton) == JFileChooser.APPROVE_OPTION) {
+					file = fileChooser.getSelectedFile();
+					filenameBar.setText(file.toString());
+					canvas.save(file);
+				}
 			} else if (event.getSource() == loadButton) {
-				canvas.load();
+				fileChooser = new JFileChooser();
+				if (fileChooser.showOpenDialog(loadButton) == JFileChooser.APPROVE_OPTION) {
+					file = fileChooser.getSelectedFile();
+					filenameBar.setText(file.toString());
+					canvas.load(file);
+				}
 			} else if (event.getSource() == colorPicker) {
 				color = JColorChooser.showDialog(null, "Pick your color!",
 						color);
@@ -71,7 +107,8 @@ public class Draw {
 		container.add(canvas, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
-
+		JPanel panel1 = new JPanel();
+		panel1.setLayout(new FlowLayout());
 		blackButton = new JButton();
 		blackButton.setBackground(Color.BLACK);
 		blackButton.setPreferredSize(new Dimension(40, 40));
@@ -116,15 +153,19 @@ public class Draw {
 		lightGrayButton.setBackground(Color.LIGHT_GRAY);
 		lightGrayButton.setPreferredSize(new Dimension(40, 40));
 		lightGrayButton.addActionListener(listener);
-		saveButton = new JButton("Save");
+		saveButton = new JButton(save);
 		saveButton.addActionListener(listener);
+		saveAsButton = new JButton("Save As");
+		saveAsButton.addActionListener(listener);
 		loadButton = new JButton("Load");
 		loadButton.addActionListener(listener);
 		colorPicker = new JButton("Color Picker");
 		colorPicker.addActionListener(listener);
 		clearButton = new JButton("Clear");
 		clearButton.addActionListener(listener);
-
+		
+		filenameBar = new JLabel("No file");
+		panel1.add(filenameBar, BorderLayout.SOUTH);
 		panel.add(greenButton);
 		panel.add(blueButton);
 		panel.add(blackButton);
@@ -137,14 +178,15 @@ public class Draw {
 		panel.add(cyanButton);
 		panel.add(lightGrayButton);
 		panel.add(saveButton);
+		panel.add(saveAsButton);
 		panel.add(loadButton);
 		panel.add(colorPicker);
 		panel.add(clearButton);
 
 		container.add(panel, BorderLayout.NORTH);
-
+		container.add(panel1,BorderLayout.SOUTH);
 		frame.setVisible(true);
-		frame.setSize(780, 780);
+		frame.setSize(800, 800);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
