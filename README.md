@@ -17,7 +17,7 @@ Features
 
 * Fork it.
 * Create a branch (```git checkout -b my_branch```)
-  * Using Eclipse make a workspace on the top directory of Swing-Paint-Application
+  * Using Eclipse make a workspace on the top directory of 'Swing-Paint-Application'
   * Create new project
   * Name the Project SwingPaint
   * Press next and click the Libraries tab
