@@ -19,7 +19,7 @@ Features
 * Create a branch (```git checkout -b my_branch```)
   * Using Eclipse make a workspace on the top directory of JavaGame
   * Create new project
-  * Name the Project JavaGame
+  * Name the Project SwingPaint
   * Press next and click the Libraries tab
   * Click Add Class Folder
   * Check the /res folder and hit finish
