@@ -19,14 +19,14 @@ public class Canvas extends JComponent {
 	
 	private BufferedImage img;
 
-	public void save(){
+	public void save(File file){
 		 try {  
 	       ImageIO.write(img, "PNG", new File("filename.png"));
 	       
 	    } catch (IOException ex) {}
 	 }
 	 
-	public void load() {
+	public void load(File file) {
 		try {
 			img = ImageIO.read(new File("filename.png"));
 			g = img.createGraphics();
