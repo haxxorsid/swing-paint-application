@@ -3,7 +3,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -13,18 +12,14 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
-import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -132,6 +127,19 @@ public class Draw {
 		this.height = height;
 	}
 	public void openPaint() {
+		for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+	        if ("Nimbus".equals(info.getName())) {
+	            try {
+					UIManager.setLookAndFeel(info.getClassName());
+				} catch (ClassNotFoundException | InstantiationException
+						| IllegalAccessException
+						| UnsupportedLookAndFeelException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            break;
+	        }
+	    }
 		JFrame frame = new JFrame("Paint ("+ width +"X" + height +")");
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
