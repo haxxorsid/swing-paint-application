@@ -31,18 +31,19 @@ public class Draw {
 	JButton clearButton, blackButton, blueButton, greenButton, redButton,
 			colorPicker, magentaButton, grayButton, orangeButton, yellowButton,
 			pinkButton, cyanButton, lightGrayButton, saveButton, loadButton,
-			saveAsButton,rectangle,pencil;
+			saveAsButton, rectangle, pencil, undoButton, redoButton;
 	private JFileChooser fileChooser;
 	private File file;
 	private Icon save = new ImageIcon(getClass().getResource("save.png"));
-	private Icon drawRect = new ImageIcon(getClass().getResource("rect.png"));
-	private Icon drawPencil = new ImageIcon(getClass().getResource("pencil.png"));
+	private Icon undo = new ImageIcon(getClass().getResource("undo.png"));
+	private Icon redo = new ImageIcon(getClass().getResource("redo.png"));
 	private int saveCounter = 0;
-	private JLabel filenameBar,thicknessStat;
+	private JLabel filenameBar, thicknessStat;
 	private JSlider thicknessSlider;
-	ChangeListener thick = new ChangeListener(){
-		public void stateChanged(ChangeEvent e){
-			thicknessStat.setText(String.format("%s",thicknessSlider.getValue()));
+	ChangeListener thick = new ChangeListener() {
+		public void stateChanged(ChangeEvent e) {
+			thicknessStat.setText(String.format("%s",
+					thicknessSlider.getValue()));
 			canvas.setThickness(thicknessSlider.getValue());
 		}
 	};
@@ -73,7 +74,11 @@ public class Draw {
 				canvas.cyan();
 			} else if (event.getSource() == lightGrayButton) {
 				canvas.lightGray();
-			}else if (event.getSource() == saveButton) {
+			} else if (event.getSource() == undoButton) {
+				canvas.undo();
+			} else if (event.getSource() == redoButton) {
+				canvas.redo();
+			} else if (event.getSource() == saveButton) {
 				if (saveCounter == 0) {
 					fileChooser = new JFileChooser();
 					if (fileChooser.showSaveDialog(saveButton) == JFileChooser.APPROVE_OPTION) {
@@ -116,21 +121,27 @@ public class Draw {
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
 		canvas = new Canvas();
-		
+
 		container.add(canvas, BorderLayout.CENTER);
 
 		JPanel panel = new JPanel();
 		JPanel panel1 = new JPanel();
 		Box box = Box.createVerticalBox();
 		Box box1 = Box.createHorizontalBox();
-		
+
 		panel1.setLayout(new FlowLayout());
 
-		thicknessSlider = new JSlider(JSlider.HORIZONTAL,0,50,1);
+		thicknessSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 1);
 		thicknessSlider.setMajorTickSpacing(25);
 		thicknessSlider.setPaintTicks(true);
-		thicknessSlider.setPreferredSize(new Dimension( 40, 40));
+		thicknessSlider.setPreferredSize(new Dimension(40, 40));
 		thicknessSlider.addChangeListener(thick);
+		undoButton = new JButton(undo);
+		undoButton.setPreferredSize(new Dimension(20, 20));
+		undoButton.addActionListener(listener);
+		redoButton = new JButton(redo);
+		redoButton.setPreferredSize(new Dimension(20, 20));
+		redoButton.addActionListener(listener);
 		blackButton = new JButton();
 		blackButton.setBackground(Color.BLACK);
 		blackButton.setPreferredSize(new Dimension(40, 40));
@@ -185,15 +196,19 @@ public class Draw {
 		colorPicker.addActionListener(listener);
 		clearButton = new JButton("Clear");
 		clearButton.addActionListener(listener);
-		
+
 		filenameBar = new JLabel("No file");
 		thicknessStat = new JLabel("1");
-		
-		box1.add(thicknessSlider,BorderLayout.NORTH);
-		box1.add(thicknessStat,BorderLayout.NORTH);
-		box.add(box1,BorderLayout.NORTH);
+
+		box1.add(thicknessSlider, BorderLayout.NORTH);
+		box1.add(thicknessStat, BorderLayout.NORTH);
+		box.add(box1, BorderLayout.NORTH);
 		panel1.add(filenameBar, BorderLayout.SOUTH);
-		
+		box.add(Box.createVerticalStrut(20));
+		box.add(undoButton, BorderLayout.NORTH);
+		box.add(Box.createVerticalStrut(5));
+		box.add(redoButton, BorderLayout.NORTH);
+
 		panel.add(greenButton);
 		panel.add(blueButton);
 		panel.add(blackButton);
@@ -212,12 +227,12 @@ public class Draw {
 		panel.add(clearButton);
 
 		container.add(panel, BorderLayout.NORTH);
-		container.add(panel1,BorderLayout.SOUTH);
-		container.add(box,BorderLayout.WEST);
-		
+		container.add(panel1, BorderLayout.SOUTH);
+		container.add(box, BorderLayout.WEST);
+
 		frame.setVisible(true);
-		
-		frame.setSize(905, 905);
+
+		frame.setSize(935, 935);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
