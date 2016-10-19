@@ -4,11 +4,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.File;
@@ -17,16 +20,20 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.event.MouseInputAdapter;
+
 
 public class Canvas extends JComponent {
-
-	private int X1, Y1, X2, Y2, checkTool = 0;
+	private int X1, Y1, X2, Y2;
 	private Graphics2D g;
 	private Image img, background, undoTemp, redoTemp;
 	ArrayList<Shape> shapes = new ArrayList<Shape>();
-	Point startDrag, endDrag;
 	private final SizedStack<Image> undoStack = new SizedStack<>(12);
 	private final SizedStack<Image> redoStack = new SizedStack<>(12);
+	private Rectangle shape;
+	private Point startPoint;
+	private MouseMotionListener motion;
+	private MouseListener listener;
 
 	public void save(File file) {
 		try {
@@ -53,30 +60,32 @@ public class Canvas extends JComponent {
 					RenderingHints.VALUE_ANTIALIAS_ON);
 
 			clear();
-			for (Shape s : shapes) {
-				g.draw(s);
-				g.fill(s);
-			}
-
-			if (startDrag != null && endDrag != null) {
-				g.setPaint(Color.LIGHT_GRAY);
-			}
+			
 		}
-
 		g1.drawImage(img, 0, 0, null);
+		
+		if (shape != null) {
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.draw(shape);
+		}
 	}
 
 	public Canvas() {
+		setBackground(Color.WHITE);
+		defaultListener();
+	}
+
+	public void defaultListener() {
 		setDoubleBuffered(false);
-		addMouseListener(new MouseAdapter() {
+		listener = new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				saveToStack(img);
 				X2 = e.getX();
 				Y2 = e.getY();
 			}
-		});
+		};
 
-		addMouseMotionListener(new MouseMotionAdapter() {
+		motion = new MouseMotionAdapter() {
 			public void mouseDragged(MouseEvent e) {
 				X1 = e.getX();
 				Y1 = e.getY();
@@ -88,8 +97,17 @@ public class Canvas extends JComponent {
 					Y2 = Y1;
 				}
 			}
-		});
+		};
+		addMouseListener(listener);
+		addMouseMotionListener(motion);
+	}
 
+	public void addRectangle(Rectangle rectangle, Color color) {
+
+		Graphics2D g2d = (Graphics2D) img.getGraphics();
+		g2d.setColor(color);
+		g2d.draw(rectangle);
+		repaint();
 	}
 
 	public void red() {
@@ -167,6 +185,21 @@ public class Canvas extends JComponent {
 		}
 	}
 
+	public void pencil() {
+		removeMouseListener(listener);
+		removeMouseMotionListener(motion);
+		defaultListener();
+		
+	}
+
+	public void rect() {
+		removeMouseListener(listener);
+		removeMouseMotionListener(motion);
+		MyMouseListener ml = new MyMouseListener();
+		addMouseListener(ml);
+		addMouseMotionListener(ml);
+	}
+
 	private void setImage(Image img) {
 		g = (Graphics2D) img.getGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -197,4 +230,37 @@ public class Canvas extends JComponent {
 		g.setStroke(new BasicStroke(thick));
 	}
 
+	class MyMouseListener extends MouseInputAdapter
+	{
+		private Point startPoint;
+
+		public void mousePressed(MouseEvent e)
+		{
+			startPoint = e.getPoint();
+			shape = new Rectangle();
+		}
+
+		public void mouseDragged(MouseEvent e)
+		{
+			int x = Math.min(startPoint.x, e.getX());
+			int y = Math.min(startPoint.y, e.getY());
+			int width = Math.abs(startPoint.x - e.getX());
+			int height = Math.abs(startPoint.y - e.getY());
+
+			shape.setBounds(x, y, width, height);
+			repaint();
+		}
+
+		public void mouseReleased(MouseEvent e)
+		{
+			if (shape.width != 0 || shape.height != 0)
+			{
+				addRectangle(shape, e.getComponent().getForeground());
+			}
+
+			shape = null;
+		}
+	}
 }
+
+	
