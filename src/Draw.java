@@ -3,6 +3,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,19 +13,22 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public class Draw {
-
-	public static void main(String[] args) {
-		new Draw();
-	}
 
 	Canvas canvas;
 	Color color = Color.WHITE;
@@ -37,9 +41,13 @@ public class Draw {
 	private Icon save = new ImageIcon(getClass().getResource("save.png"));
 	private Icon undo = new ImageIcon(getClass().getResource("undo.png"));
 	private Icon redo = new ImageIcon(getClass().getResource("redo.png"));
+	private Icon pencilIcon = new ImageIcon(getClass()
+			.getResource("pencil.png"));
+	private Icon rect = new ImageIcon(getClass().getResource("rect.png"));
 	private int saveCounter = 0;
 	private JLabel filenameBar, thicknessStat;
 	private JSlider thicknessSlider;
+	private int width, height;
 	ChangeListener thick = new ChangeListener() {
 		public void stateChanged(ChangeEvent e) {
 			thicknessStat.setText(String.format("%s",
@@ -78,6 +86,10 @@ public class Draw {
 				canvas.undo();
 			} else if (event.getSource() == redoButton) {
 				canvas.redo();
+			} else if (event.getSource() == rectangle) {
+				canvas.rect();
+			} else if (event.getSource() == pencil) {
+				canvas.pencil();
 			} else if (event.getSource() == saveButton) {
 				if (saveCounter == 0) {
 					fileChooser = new JFileChooser();
@@ -115,9 +127,12 @@ public class Draw {
 			}
 		}
 	};
-
-	public Draw() {
-		JFrame frame = new JFrame("Paint");
+	public void setWH(int width,int height){
+		this.width = width;
+		this.height = height;
+	}
+	public void openPaint() {
+		JFrame frame = new JFrame("Paint ("+ width +"X" + height +")");
 		Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
 		canvas = new Canvas();
@@ -131,6 +146,12 @@ public class Draw {
 
 		panel1.setLayout(new FlowLayout());
 
+		pencil = new JButton(pencilIcon);
+		pencil.setPreferredSize(new Dimension(40, 40));
+		pencil.addActionListener(listener);
+		rectangle = new JButton(rect);
+		rectangle.setPreferredSize(new Dimension(40, 40));
+		rectangle.addActionListener(listener);
 		thicknessSlider = new JSlider(JSlider.HORIZONTAL, 0, 50, 1);
 		thicknessSlider.setMajorTickSpacing(25);
 		thicknessSlider.setPaintTicks(true);
@@ -200,6 +221,7 @@ public class Draw {
 		filenameBar = new JLabel("No file");
 		thicknessStat = new JLabel("1");
 
+		box.add(Box.createVerticalStrut(40));
 		box1.add(thicknessSlider, BorderLayout.NORTH);
 		box1.add(thicknessStat, BorderLayout.NORTH);
 		box.add(box1, BorderLayout.NORTH);
@@ -208,6 +230,10 @@ public class Draw {
 		box.add(undoButton, BorderLayout.NORTH);
 		box.add(Box.createVerticalStrut(5));
 		box.add(redoButton, BorderLayout.NORTH);
+		/*box.add(Box.createVerticalStrut(5));
+		box.add(pencil, BorderLayout.NORTH);
+		box.add(Box.createVerticalStrut(5));
+		box.add(rectangle, BorderLayout.NORTH);*/
 
 		panel.add(greenButton);
 		panel.add(blueButton);
@@ -232,7 +258,7 @@ public class Draw {
 
 		frame.setVisible(true);
 
-		frame.setSize(935, 935);
+		frame.setSize(width+79,height+11);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
