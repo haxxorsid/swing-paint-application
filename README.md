@@ -12,6 +12,9 @@ Features
 3. Provided with Color Picker (Swatches, HSV, HSL, RGB, CMYK) using JColorChooser.
 4. Small size, easy-to-understand code.
 5. Save, Save As, Load buttons to Save/Load you work using Interactive JFileChooser.
+6. Undo, Redo
+7. Nimbus Look and Feel theme.
+8. Set Canvas size. ( Minimum recommended: 900x800)
 
 ###How to use this repository
 
