@@ -7,7 +7,7 @@ A basic paint application based on Java swing made for University as a Mini-proj
 Features
 ---------
 
-1. Draw lines and strokes as a pencil tool.
+1. Draw strokes with pencil tool and set thickness.
 2. 11 Quick color selection buttons.
 3. Provided with Color Picker (Swatches, HSV, HSL, RGB, CMYK) using JColorChooser.
 4. Small size, easy-to-understand code.
