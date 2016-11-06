@@ -53,4 +53,4 @@ Color Picker ( JColorChooser)
 
 ###Note
 
-All icons used in the project are placed in /src folder. So if you're experiencing any NullPointerException issue, please link/copy those image files in your project properly.
+All icons used in the project are placed in /bin folder. So if you're experiencing any NullPointerException issue, please link/copy those image files in your project properly.
