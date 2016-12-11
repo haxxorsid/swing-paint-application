@@ -46,7 +46,7 @@ Easy way (for newbs):
 * Extract.
 * Open eclipse or any IDE and Import project.
 * Run InputWH.java.
-* If you're experiencing NullPointerException issue regarding images, the images stored in /bin folder might not be download, so please download them manually from this repository from /bin folder and link/copy those images with your project in eclipse.
+* If you're experiencing NullPointerException issue regarding images, the images stored in /bin folder might not be download, so please downloaded them manually from this repository from bin folder and link/copy those images with your project in eclipse.
 
 Other way: 
 [Directly from Git to Eclipse](http://stackoverflow.com/questions/6760115/importing-a-github-project-into-eclipse)
