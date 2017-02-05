@@ -2,7 +2,7 @@
 What is Swing Paint Application ?
 ---------
 
-A basic paint application based on Java swing made for University as a Mini-project. 
+A basic paint application based on Java swing made for College as a Mini-project. 
 
 Features
 ---------
