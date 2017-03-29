@@ -36,7 +36,7 @@ Color Picker ( JColorChooser)
 
 ![Color Picker](http://image.prntscr.com/image/30651492ee864a008ea235b24e6ad278.jpg "Color Picker")
 
-##How to use this repository
+## How to use this repository
 
 * Fork it.
 
@@ -64,6 +64,6 @@ Recommended way:
 * Push to the branch (```git push origin my_branch```)
 * Open a [Pull Request](https://github.com/haxxorsid/Swing-Paint-Application/pull/new/master)
 
-##Note
+## Note
 
 All icons used in the project are placed in /bin folder. So if you're experiencing any NullPointerException issue, please link/copy those image files in your project properly.
