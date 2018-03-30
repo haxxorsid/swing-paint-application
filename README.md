@@ -39,30 +39,12 @@ Color Picker ( JColorChooser)
 ## How to use this repository
 
 * Fork it.
-
-Easy way (for newbs):
 * Click on Clone or download  button in top right corner.
 * Download zip.
 * Extract.
 * Open eclipse or any IDE and Import project.
 * Run InputWH.java.
 * If you're experiencing NullPointerException issue regarding images, the images stored in /bin folder might not be downloaded, so please download them manually from this repository from bin folder and link/copy those images with your project in eclipse.
-
-Other way: 
-[Directly from Git to Eclipse](http://stackoverflow.com/questions/6760115/importing-a-github-project-into-eclipse)
-
-Recommended way:
-* Create a branch (```git checkout -b my_branch```)
-  * Using Eclipse make a workspace on the top directory of 'Swing-Paint-Application'
-  * Create new project
-  * Name the Project SwingPaint
-  * Press next and click the Libraries tab
-  * Click Add Class Folder
-  * Check the /res folder and hit finish
-  * Make the changes in the /src folder
-* Commit your changes (```git commit -m "Change Title"```)
-* Push to the branch (```git push origin my_branch```)
-* Open a [Pull Request](https://github.com/haxxorsid/Swing-Paint-Application/pull/new/master)
 
 ## Note
 
